@@ -125,7 +125,7 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             width: 100%; padding: 12px; background: #0b0b0b; border: 1px solid #3a3a3a;
             color: var(--white); font-family: inherit; font-size: 22px; text-decoration: none;
-            transition: all 0.2s;
+            transition: all 0.2s; cursor: pointer;
         }
         .vbtn small { font-size: 14px; color: #8a8a8a; margin-top: 4px; }
         .vbtn:hover, .vbtn:active { border-color: var(--red); color: #fff; box-shadow: 0 0 15px rgba(224,16,42,.3); }
@@ -141,7 +141,7 @@
         .eye b { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; background: #ff1a35; border-radius: 50%; box-shadow: 0 0 8px #ff1a35; transition: transform 0.1s; }
         .footer-text { color: #8a867e; font-size: 18px; letter-spacing: 1px; }
 
-        /* Модалка кода */
+        /* Модалки */
         .modal-wrap {
             position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 50;
             display: none; align-items: center; justify-content: center; padding: 20px;
@@ -156,6 +156,13 @@
             width: 100%; height: 50vh; background: #050505; color: #c9c4b8; border: 1px solid #222;
             font-family: monospace; font-size: 14px; padding: 10px; resize: none;
         }
+        
+        /* Кастомная модалка для Легаси */
+        #legacy-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 60; align-items: center; justify-content: center; padding: 20px; }
+        #legacy-modal .modal { max-width: 400px; text-align: center; }
+        #legacy-modal .mh { justify-content: center; font-size: 24px; margin-bottom: 15px; }
+        #legacy-modal p { font-size: 22px; margin-bottom: 20px; }
+        #legacy-modal .vbtn { width: auto; padding: 10px 30px; margin: 0 auto; }
 
         @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
         @keyframes jitter { 0%, 90%, 100% { transform: translate(0,0); } 92% { transform: translate(-2px,1px); } 94% { transform: translate(2px,-1px); } 96% { transform: translate(-1px,2px); } }
@@ -201,7 +208,6 @@
                         <h2 class="ct">КОТОСТЬ КЛИКЕР II [1.0B] <span class="tag tag-beta">БЕТА</span></h2>
                         <p class="desc">Огромный реворк для первой части. 11 новых скинов, система улучшений и режим разработчика. Мультиплеер в планах.</p>
                         <div class="btns">
-                            <!-- ССЫЛКИ ТЕПЕРЬ ПРОСТЫЕ (тег <a>) -->
                             <a class="vbtn" href="https://twinkcringegd.github.io/kotostclicker2/" target="_blank">
                                 [ ИГРАТЬ В БРАУЗЕРЕ ]
                                 <small>twinkcringegd.github.io/kotostclicker2</small>
@@ -244,7 +250,7 @@
                         <h2 class="ct">КОТОСТЬ КЛИКЕР (Легаси) <span class="tag tag-back">ВЕРНЁТСЯ</span></h2>
                         <p class="desc">Игра закрыта временно. В обновлении 1.1 игра вернётся с выходом новой вкладки — Дворец.</p>
                         <div class="btns">
-                            <button class="vbtn" onclick="alert('АРХИВ ЗАКРЫТ. ДОСТУП ТОЛЬКО ДЛЯ РАЗРАБОТЧИКОВ')">[ ЗАПРОСИТЬ ДОСТУП ]</button>
+                            <button class="vbtn" id="btn-legacy">[ ЗАПРОСИТЬ ДОСТУП ]</button>
                         </div>
                     </div>
                 </article>
@@ -270,6 +276,15 @@
             <div class="mh">REW // SOURCE.HTML <span id="code-lines">0 СТРОК</span></div>
             <textarea id="code-area" readonly></textarea>
             <button class="vbtn" id="btn-close-code">[ ЗАКРЫТЬ ]</button>
+        </div>
+    </div>
+
+    <!-- Кастомная модалка для Легаси -->
+    <div id="legacy-modal">
+        <div class="modal">
+            <div class="mh">[ ! ] СИСТЕМНОЕ СООБЩЕНИЕ</div>
+            <p>АРХИВ ЗАКРЫТ.<br>ДОСТУП ТОЛЬКО ДЛЯ РАЗРАБОТЧИКОВ</p>
+            <button class="vbtn" id="btn-close-legacy">[ OK ]</button>
         </div>
     </div>
 
@@ -346,6 +361,16 @@
         });
         document.getElementById('btn-close-code').addEventListener('click', () => {
             modal.classList.remove('open');
+        });
+
+        // Кастомная модалка для Легаси
+        const legacyModal = document.getElementById('legacy-modal');
+        document.getElementById('btn-legacy').addEventListener('click', () => {
+            legacyModal.style.display = 'flex';
+            startMusic();
+        });
+        document.getElementById('btn-close-legacy').addEventListener('click', () => {
+            legacyModal.style.display = 'none';
         });
 
         // Звук (вкл/выкл)
