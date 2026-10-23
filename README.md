@@ -1,2 +1,2 @@
 # twinkcringegd.github.io
-meme bs
+Official TwinkCringeGD Site (wiki,maybe)
