@@ -177,7 +177,7 @@
 
         /* ЛОР */
         .lore-tab.active { border-color: var(--red) !important; color: var(--red) !important; }
-        #lore-content { font-family: 'VT323', monospace; font-size: 20px; line-height: 1.4; color: #c9c4b8; white-space: pre-wrap; text-shadow: 0 0 2px rgba(224,16,42,0.5); }
+        #lore-content { font-family: 'VT323', monospace; font-size: 20px; line-height: 1.4; color: #c9c4b8; white-space: pre-wrap; text-shadow: 0 0 2px rgba(224,16,42,0.5); transition: color 0.3s, text-shadow 0.3s; }
         
         @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
         @keyframes jitter { 0%, 90%, 100% { transform: translate(0,0); } 92% { transform: translate(-2px,1px); } 94% { transform: translate(2px,-1px); } 96% { transform: translate(-1px,2px); } }
@@ -293,13 +293,13 @@
     <div class="modal-wrap" id="code-modal">
         <div class="modal">
             <div class="mh">REW // SOURCE.HTML <span id="code-lines">374 СТРОК</span></div>
-            <textarea id="code-area" readonly=""></textarea>
+            <textarea id="code-area" readonly></textarea>
             <button class="vbtn" id="btn-close-code">[ ЗАКРЫТЬ ]</button>
         </div>
     </div>
 
     <!-- МОДАЛКА ЛЕГАСИ -->
-    <div id="legacy-modal" style="display: none;">
+    <div id="legacy-modal">
         <div class="modal">
             <div class="mh">[ ! ] СИСТЕМНОЕ СООБЩЕНИЕ</div>
             <p>АРХИВ ЗАКРЫТ.<br>ДОСТУП ТОЛЬКО ДЛЯ РАЗРАБОТЧИКОВ</p>
@@ -315,6 +315,7 @@
             <div style="display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
                 <button class="lore-tab vbtn" data-target="tape1" style="width: auto; padding: 5px 15px; font-size: 18px; border-color: var(--red); color: var(--red);">КАССЕТА 01</button>
                 <button class="lore-tab vbtn" data-target="tape2" style="width: auto; padding: 5px 15px; font-size: 18px; border-color: #333; color: #8a8a8a;">КАССЕТА 02</button>
+                <button class="lore-tab vbtn" data-target="tape3" style="width: auto; padding: 5px 15px; font-size: 18px; border-color: #333; color: #8a8a8a;">КАССЕТА 03</button>
             </div>
 
             <div id="lore-content" style="height: 45vh; overflow-y: auto; background: #050505; border: 1px solid #222; padding: 15px;"></div>
@@ -330,7 +331,7 @@
 
     <script>
         // ==========================================
-        // 1. АУДИО-СИСТЕМА (Файлы + Web Audio API фолбэк)
+        // 1. АУДИО-СИСТЕМА
         // ==========================================
         const bgm = document.getElementById('bgm');
         let audioStarted = false;
@@ -393,7 +394,7 @@
         });
 
         // ==========================================
-        // 2. ГЛИТЧ-ЭФФЕКТЫ
+        // 2. ГЛИТЧ-ЭФФЕКТЫ И ТАЙМКОД
         // ==========================================
         const mainTitle = document.getElementById('main-title');
         if(mainTitle) {
@@ -407,9 +408,6 @@
             });
         }
 
-        // ==========================================
-        // 3. ТАЙМКОД
-        // ==========================================
         let seconds = 0;
         setInterval(() => {
             seconds++;
@@ -420,7 +418,7 @@
         }, 1000);
 
         // ==========================================
-        // 4. ГЛАЗА
+        // 3. ГЛАЗА
         // ==========================================
         const pupils = document.querySelectorAll('.eye b');
         document.addEventListener('mousemove', (e) => {
@@ -437,7 +435,7 @@
         });
 
         // ==========================================
-        // 5. ШУМ
+        // 4. ШУМ
         // ==========================================
         const canvas = document.getElementById('grain');
         const ctx = canvas.getContext('2d');
@@ -455,7 +453,7 @@
         drawNoise();
 
         // ==========================================
-        // 6. МОДАЛКИ И КНОПКИ
+        // 5. МОДАЛКИ И КНОПКИ
         // ==========================================
         const modal = document.getElementById('code-modal');
         const codeArea = document.getElementById('code-area');
@@ -491,7 +489,7 @@
         });
 
         // ==========================================
-        // 7. ЛОР И АРХИВ (Печатная машинка)
+        // 6. ЛОР И АРХИВ (Печатная машинка)
         // ==========================================
         const loreModal = document.getElementById('lore-modal');
         const btnLore = document.getElementById('btn-lore');
@@ -502,38 +500,73 @@
         const loreTexts = {
             tape1: `Found Footage 1 (КК1 ЛОР)\n\nГде я?.. Это место новое.\nЧто это такое в далеке?\nКот? Похоже на какую то игру с вкладками.\nА если я... в игре?\n???: Добро Пожаловать в мой мир.\n(Кто ты?...)\nThe Creator:Можешь звать меня... просто креатор. Проведу тебе небольшое обучение здесь.\nТы тоже здесь что ли оказался?\nThe Creator: (кхм кхм...) Да,да... Так вот, забыли. Кликай по котику и поулчай Котости.\n(Клик)\nДОСТИЖЕНИЕ ПОЛУЧЕНО - ПЕРВЫЙ КЛИК!\nThe Creator:Я отделил мой слот сохранения от твоего чтоб не было конфликта аккаунтов.\nЭто место... Очень странное\n\nThe Creator: Наслаждайся! Я пойду выпью чаю...\nСТОЙ!\n\n[Tape End at 2 minutes,19 seconds,0 hours and 0 days.]`,
             
-            tape2: `After... (Часть 2)\n\nЧто это была за кассета? Будто бы кто то здесь заперт...\nТОЧНО! Файлы сохранения! Я знаю как теперь играть в это! Все из за 1 кассеты.\nГде вкладка сохранений... Нашел!\nThe Creator: Вижу что ты новый здесь,нет ли?\n… Не уверен и вообще, как ты тут оказался!?\nThe Creator: Ну, раз ты все знаешь значит я пошел.\nЛадно.\nТеперь я могу заглянуть в эту вкладку.\n[Добро Пожаловать в Файлы Сохранения! Тут хранятся файлы сохранения... не очевидно,да?]\nФАЙЛ 1:Unknown Name (файл сохранения есть но аккаунт пустой.)\nФАЙЛ 2:The Creator (Unknown Data: ERROR 003 Couldnt find Save File in the game code or JSON file.)\nФАЙЛ 3:ПУСТ (Сохранить?)\nКажется больше тут ничего нету...\nЭто бесмысслено\nЧто за "почта"?\n[ПОЧТА]\n1 Сообщение от The Creator\n\nThe Creator:Держи свой боус дня. (+250 Котостей)\nЯ... Пожалуй откажусь.\nНу и что мне тут еще делать?\nТочно! Кликать же тут надо.\n(Клик,клик,клик...)\nУже 100 котостей.\n[ДОСТИЖЕНИЕ ПОЛУЧЕНО! Первая сотня]\nХотя бы достижение.\nПойду посмотрю еще новые вкладки...\n"Улучшения?" Я могу улучшать свои клики и покупать автоклики?\nЯ так думаю да!\n"Скины" Хмм... Дорогие. Большая котость стоит 100000 котостей.\n"Настройки" Тут ничего нету.\n"Дворец" Эта вкладка вообще закрыта.\n"Ачивки" Ну тут уже очевидно.\nПросто продолжу кликать...`
+            tape2: `After... (Часть 2)\n\nЧто это была за кассета? Будто бы кто то здесь заперт...\nТОЧНО! Файлы сохранения! Я знаю как теперь играть в это! Все из за 1 кассеты.\nГде вкладка сохранений... Нашел!\nThe Creator: Вижу что ты новый здесь,нет ли?\n… Не уверен и вообще, как ты тут оказался!?\nThe Creator: Ну, раз ты все знаешь значит я пошел.\nЛадно.\nТеперь я могу заглянуть в эту вкладку.\n[Добро Пожаловать в Файлы Сохранения! Тут хранятся файлы сохранения... не очевидно,да?]\nФАЙЛ 1:Unknown Name (файл сохранения есть но аккаунт пустой.)\nФАЙЛ 2:The Creator (Unknown Data: ERROR 003 Couldnt find Save File in the game code or JSON file.)\nФАЙЛ 3:ПУСТ (Сохранить?)\nКажется больше тут ничего нету...\nЭто бесмысслено\nЧто за "почта"?\n[ПОЧТА]\n1 Сообщение от The Creator\n\nThe Creator:Держи свой боус дня. (+250 Котостей)\nЯ... Пожалуй откажусь.\nНу и что мне тут еще делать?\nТочно! Кликать же тут надо.\n(Клик,клик,клик...)\nУже 100 котостей.\n[ДОСТИЖЕНИЕ ПОЛУЧЕНО! Первая сотня]\nХотя бы достижение.\nПойду посмотрю еще новые вкладки...\n"Улучшения?" Я могу улучшать свои клики и покупать автоклики?\nЯ так думаю да!\n"Скины" Хмм... Дорогие. Большая котость стоит 100000 котостей.\n"Настройки" Тут ничего нету.\n"Дворец" Эта вкладка вообще закрыта.\n"Ачивки" Ну тут уже очевидно.\nПросто продолжу кликать...`,
+            
+            tape3: `Nr ynwji (КК ЛОР ЧАСТЬ 3)\n\nЯ так устал... Я больше не хочу ничего делать.\nЯ хочу спать.\nЯ хочу домой.\nВ реальный мир.\nТак что\nВыпусти меня.\nВыпусти меня\nВЫПУСТИ МЕНЯ\nВЫПУСТИ МЕНЯ\nВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ ВЫПУСТИ МЕНЯ\n\nЕ ЖФСВЮК УК ТФИЩ\n\nПОЧЕМУ ЭТО ИМЕННО Я\nПОЧЕМУ ТЫ ДЕЛАЕШЬ ЭТО СО МНОЙ\nПРОСТО\nВЫПУСТИТЕ\nМЕНЯ\nНА ВОЛЮ.\n\n[СИСТЕМНАЯ ОШИБКА: ФАЙЛ ПОВРЕЖДЁН. ПОПЫТКА ВОССТАНОВЛЕНИЯ ТЕКСТА...]`
         };
 
         let typingInterval;
+        let isTape3Active = false;
 
         function typeText(text, element, callback) {
             clearInterval(typingInterval);
             element.textContent = '';
+            element.style.color = '#c9c4b8';
+            element.style.textShadow = '0 0 2px rgba(224,16,42,0.5)';
             let i = 0;
+            isTape3Active = text.includes('Nr ynwji');
+            
             typingInterval = setInterval(() => {
                 if (i < text.length) {
+                    // Эффект для 3 кассеты
+                    if (isTape3Active) {
+                        if (text.substring(i).startsWith('ВЫПУСТИ МЕНЯ')) {
+                            element.style.color = 'var(--red)';
+                            element.style.textShadow = '0 0 10px red';
+                        }
+                        if (i > 150) {
+                            // Ускорение и глитч в конце
+                            element.style.transform = `translate(${Math.random() * 4 - 2}px, ${Math.random() * 4 - 2}px)`;
+                        }
+                    }
+                    
                     element.textContent += text.charAt(i);
                     element.scrollTop = element.scrollHeight; 
-                    // Звук печатной машинки
+                    
                     if (i % 2 === 0 && soundOn && audioCtx.state === 'running') {
                         const osc = audioCtx.createOscillator();
                         const gain = audioCtx.createGain();
                         osc.connect(gain);
                         gain.connect(audioCtx.destination);
                         osc.type = 'square';
-                        osc.frequency.setValueAtTime(800 + Math.random() * 200, audioCtx.currentTime);
+                        osc.frequency.setValueAtTime(isTape3Active ? 200 + Math.random() * 100 : 800 + Math.random() * 200, audioCtx.currentTime);
                         gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
                         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
                         osc.start();
                         osc.stop(audioCtx.currentTime + 0.05);
                     }
+                    
                     i++;
+                    
+                    // Ускорение для 3 кассеты
+                    if (isTape3Active && i > 100) {
+                        clearInterval(typingInterval);
+                        typingInterval = setInterval(() => {
+                            if (i < text.length) {
+                                element.textContent += text.charAt(i);
+                                element.scrollTop = element.scrollHeight;
+                                i++;
+                            } else {
+                                clearInterval(typingInterval);
+                                if (callback) callback();
+                            }
+                        }, 10);
+                    }
                 } else {
                     clearInterval(typingInterval);
                     if (callback) callback();
                 }
-            }, 25); // Скорость печати
+            }, 25);
         }
 
         btnLore.addEventListener('click', () => {
