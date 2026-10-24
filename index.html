@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>TWINKCRINGEGD — АРХИВ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&amp;display=swap">
     <style>
         :root {
             --red: #e0102a;
@@ -82,7 +82,11 @@
         .glitch-title {
             font-size: clamp(40px, 12vw, 60px); text-align: center; margin-top: 10px;
             color: var(--white); text-shadow: 2px 0 rgba(224,16,42,.75), -2px 0 rgba(60,220,255,.35);
-            animation: jitter 4s infinite;
+            animation: jitter 4s infinite; transition: text-shadow 0.1s;
+        }
+        .glitch-title:hover {
+            text-shadow: 4px 0 rgba(224,16,42,.9), -4px 0 rgba(60,220,255,.6);
+            animation: jitter 0.1s infinite;
         }
         .subtitle { font-size: 22px; text-align: center; color: var(--white); letter-spacing: 2px; margin-top: 5px; }
         .typed { font-size: 18px; text-align: center; color: #9a958c; margin-top: 10px; min-height: 20px; }
@@ -113,6 +117,18 @@
         
         .desc { font-size: 20px; color: #aaa; line-height: 1.3; margin-bottom: 20px; }
 
+        /* ПРЕДУПРЕЖДЕНИЯ */
+        .warning-box {
+            border: 1px solid #ffcc00; background: rgba(255, 204, 0, 0.1); 
+            padding: 12px; margin-bottom: 15px; font-family: 'VT323', monospace; 
+            color: #ffcc00; font-size: 16px; text-align: left; line-height: 1.2;
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+        }
+        .warning-box.error {
+            border-color: var(--red); background: rgba(224, 16, 42, 0.1); color: var(--red);
+            text-shadow: 0 0 5px rgba(224, 16, 42, 0.5);
+        }
+
         /* КНОПКИ */
         .btns { display: flex; flex-direction: column; gap: 10px; }
         .vbtn {
@@ -122,7 +138,11 @@
             transition: all 0.2s; cursor: pointer;
         }
         .vbtn small { font-size: 14px; color: #8a8a8a; margin-top: 4px; }
-        .vbtn:hover, .vbtn:active { border-color: var(--red); color: #fff; box-shadow: 0 0 15px rgba(224,16,42,.3); }
+        .vbtn:hover, .vbtn:active { 
+            border-color: var(--red); color: #fff; box-shadow: 0 0 15px rgba(224,16,42,.3); 
+            transform: translateX(5px);
+        }
+        .vbtn:active { transform: scale(0.98); }
 
         .coderow { margin: 30px 0; }
         .vbtn.wide { border-style: dashed; }
@@ -154,15 +174,15 @@
 </head>
 <body>
     <div id="game">
-        <canvas id="grain" class="fx"></canvas>
+        <canvas id="grain" class="fx" width="200" height="200"></canvas>
         <div class="fx scan"></div>
         <div class="fx vig"></div>
 
         <div class="osd">
             <span class="rec"><i class="dot"></i>REC</span>
             <span class="mode">PLAY</span>
-            <span id="timecode">SP 0:00:00</span>
-            <button id="btn-sound" style="background: #0b0b0b; color: #d8d2c4; border: 1px solid #333; padding: 2px 10px; font-family: inherit; cursor: pointer;">ЗВУК: ВКЛ</button>
+            <span id="timecode">SP 0:05:12</span>
+            <button id="btn-sound" style="background: #0b0b0b; color: #d8d2c4; border: 1px solid #333; padding: 2px 10px; font-family: inherit; cursor: pointer; margin-left: 10px;">ЗВУК: ВКЛ</button>
         </div>
 
         <div id="scroller">
@@ -174,7 +194,7 @@
                     <div class="tapeid">КАССЕТА #00 // ОФИЦИАЛЬНЫЙ АРХИВ</div>
                     <h1 class="glitch-title" id="main-title">TWINKCRINGEGD</h1>
                     <p class="subtitle">Indie Game Developer</p>
-                    <p class="typed" id="typed-text">> ЗАГРУЗКА АРХИВА... НАЙДЕНО КАССЕТ: 3</p>
+                    <p class="typed" id="typed-text">&gt; ЗАГРУЗКА АРХИВА... НАЙДЕНО КАССЕТ: 3</p>
                 </header>
 
                 <article class="card">
@@ -184,13 +204,19 @@
                     </div>
                     <div class="card-body">
                         <h2 class="ct">КОТОСТЬ КЛИКЕР II [1.0B] <span class="tag tag-beta">БЕТА</span></h2>
+                        
+                        <!-- ПРЕДУПРЕЖДЕНИЕ ДЛЯ КК2 -->
+                        <div class="warning-box">
+                            <strong>⚠️ ВАЖНО:</strong> Рекомендуется играть в браузере для избегания багов и других проблем. Браузерная версия на это время более стабильнее чем АПК файл. Особенно на эмуляторах - там довольно полно багов.
+                        </div>
+
                         <p class="desc">Огромный реворк для первой части. 11 новых скинов, система улучшений и режим разработчика. Мультиплеер в планах.</p>
                         <div class="btns">
                             <a class="vbtn" href="https://twinkcringegd.github.io/kotostclicker2/" target="_blank" id="link-play-kk2">
                                 [ ИГРАТЬ В БРАУЗЕРЕ ]
                                 <small>twinkcringegd.github.io/kotostclicker2</small>
                             </a>
-                            <a class="vbtn" href="https://github.com/TwinkCringeGD/twinkcringegd.github.io/raw/main/Kotost%20Clicker%20II.apk" download id="link-dl-kk2">
+                            <a class="vbtn" href="https://github.com/TwinkCringeGD/twinkcringegd.github.io/raw/main/Kotost%20Clicker%20II.apk" download="" id="link-dl-kk2">
                                 [ СКАЧАТЬ APK ]
                                 <small>Kotost Clicker II.apk</small>
                             </a>
@@ -206,9 +232,15 @@
                     </div>
                     <div class="card-body">
                         <h2 class="ct">67 КЛИКЕР <span class="tag tag-cancel">ОТМЕНЕНО</span></h2>
+
+                        <!-- ПРЕДУПРЕЖДЕНИЕ ДЛЯ 67 КЛИКЕРА -->
+                        <div class="warning-box error">
+                            <strong>💀 ОШИБКА:</strong> Игра сломана. Возможен реворк или замена на новую игру (Котость РНГ, GD RNG).
+                        </div>
+
                         <p class="desc">THE CREATOR ОТЛОЖИЛ ЭТО... Возвращение 01.04.2027. Браузерная версия утеряна.</p>
                         <div class="btns">
-                            <a class="vbtn" href="https://github.com/TwinkCringeGD/twinkcringegd.github.io/raw/main/67clicker.apk" download id="link-dl-67">
+                            <a class="vbtn" href="https://github.com/TwinkCringeGD/twinkcringegd.github.io/raw/main/67clicker.apk" download="" id="link-dl-67">
                                 [ СКАЧАТЬ APK ]
                                 <small>67clicker.apk</small>
                             </a>
@@ -237,8 +269,8 @@
 
                 <footer>
                     <div class="eyes" id="eyes">
-                        <i class="eye"><b></b></i>
-                        <i class="eye"><b></b></i>
+                        <i class="eye"><b style="transform: translate(-6.76485px, -4.95572px);"></b></i>
+                        <i class="eye"><b style="transform: translate(-6.76485px, -4.95572px);"></b></i>
                     </div>
                     <p class="footer-text">© 2026 TwinkCringeGD. The Creator is watching.</p>
                 </footer>
@@ -248,13 +280,13 @@
 
     <div class="modal-wrap" id="code-modal">
         <div class="modal">
-            <div class="mh">REW // SOURCE.HTML <span id="code-lines">0 СТРОК</span></div>
-            <textarea id="code-area" readonly></textarea>
+            <div class="mh">REW // SOURCE.HTML <span id="code-lines">374 СТРОК</span></div>
+            <textarea id="code-area" readonly=""></textarea>
             <button class="vbtn" id="btn-close-code">[ ЗАКРЫТЬ ]</button>
         </div>
     </div>
 
-    <div id="legacy-modal">
+    <div id="legacy-modal" style="display: none;">
         <div class="modal">
             <div class="mh">[ ! ] СИСТЕМНОЕ СООБЩЕНИЕ</div>
             <p>АРХИВ ЗАКРЫТ.<br>ДОСТУП ТОЛЬКО ДЛЯ РАЗРАБОТЧИКОВ</p>
@@ -262,30 +294,97 @@
         </div>
     </div>
 
+    <!-- АУДИО (файлы) -->
     <audio id="bgm" src="https://raw.githubusercontent.com/TwinkCringeGD/twinkcringegd.github.io/main/bgm3.mp3" loop></audio>
     <audio id="sfx-click" src="https://raw.githubusercontent.com/TwinkCringeGD/twinkcringegd.github.io/main/click.mp3"></audio>
     <audio id="sfx-glitch" src="https://raw.githubusercontent.com/TwinkCringeGD/twinkcringegd.github.io/main/flash.wav"></audio>
 
     <script>
+        // ==========================================
+        // 1. АУДИО-СИСТЕМА (Файлы + Web Audio API фолбэк)
+        // ==========================================
         const bgm = document.getElementById('bgm');
         let audioStarted = false;
+        let soundOn = true;
+        
+        // Web Audio API для синтеза звуков, если файлы не загрузились
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
         function startMusic() {
             if (!audioStarted) {
                 bgm.volume = 0.3;
-                bgm.play().catch(() => {});
+                if (soundOn) bgm.play().catch(() => {});
                 audioStarted = true;
             }
         }
 
         function playClick() {
+            if (!soundOn) return;
             const s = document.getElementById('sfx-click');
-            if (s) { s.currentTime = 0; s.play().catch(() => {}); }
-        }
-        function playGlitch() {
-            const s = document.getElementById('sfx-glitch');
-            if (s) { s.currentTime = 0; s.play().catch(() => {}); }
+            s.currentTime = 0;
+            s.play().catch(() => {
+                // Фолбэк, если mp3 нет
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            });
         }
 
+        function playGlitch() {
+            if (!soundOn) return;
+            const s = document.getElementById('sfx-glitch');
+            s.currentTime = 0;
+            s.play().catch(() => {
+                // Фолбэк
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.2);
+            });
+        }
+
+        const btnSound = document.getElementById('btn-sound');
+        btnSound.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playClick();
+            soundOn = !soundOn;
+            btnSound.textContent = soundOn ? 'ЗВУК: ВКЛ' : 'ЗВУК: ВЫКЛ';
+            if (soundOn) { bgm.play().catch(()=>{}); startMusic(); }
+            else bgm.pause();
+        });
+
+        // ==========================================
+        // 2. ГЛИТЧ-ЭФФЕКТЫ
+        // ==========================================
+        const mainTitle = document.getElementById('main-title');
+        if(mainTitle) {
+            mainTitle.addEventListener('mouseenter', () => {
+                mainTitle.style.animation = 'jitter 0.1s infinite';
+                mainTitle.style.textShadow = '4px 0 rgba(224,16,42,.9), -4px 0 rgba(60,220,255,.6)';
+            });
+            mainTitle.addEventListener('mouseleave', () => {
+                mainTitle.style.animation = 'jitter 4s infinite';
+                mainTitle.style.textShadow = '2px 0 rgba(224,16,42,.75), -2px 0 rgba(60,220,255,.35)';
+            });
+        }
+
+        // ==========================================
+        // 3. ТАЙМКОД
+        // ==========================================
         let seconds = 0;
         setInterval(() => {
             seconds++;
@@ -295,6 +394,9 @@
             document.getElementById('timecode').textContent = `SP ${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         }, 1000);
 
+        // ==========================================
+        // 4. ГЛАЗА (Следят за мышкой)
+        // ==========================================
         const pupils = document.querySelectorAll('.eye b');
         document.addEventListener('mousemove', (e) => {
             const eyes = document.getElementById('eyes').getBoundingClientRect();
@@ -309,12 +411,12 @@
             pupils.forEach(p => p.style.transform = `translate(${x}px, ${y}px)`);
         });
 
+        // ==========================================
+        // 5. ШУМ (Canvas)
+        // ==========================================
         const canvas = document.getElementById('grain');
         const ctx = canvas.getContext('2d');
-        function resizeCanvas() {
-            canvas.width = 200; canvas.height = 200;
-        }
-        resizeCanvas();
+        canvas.width = 200; canvas.height = 200;
         function drawNoise() {
             const imgData = ctx.createImageData(canvas.width, canvas.height);
             const buffer = new Uint32Array(imgData.data.buffer);
@@ -327,8 +429,12 @@
         }
         drawNoise();
 
+        // ==========================================
+        // 6. МОДАЛКИ И КНОПКИ
+        // ==========================================
         const modal = document.getElementById('code-modal');
         const codeArea = document.getElementById('code-area');
+        
         document.getElementById('btn-view-code').addEventListener('click', () => {
             playClick();
             const html = document.documentElement.outerHTML;
@@ -337,6 +443,7 @@
             modal.classList.add('open');
             startMusic();
         });
+        
         document.getElementById('btn-close-code').addEventListener('click', () => {
             playClick();
             modal.classList.remove('open');
@@ -348,28 +455,27 @@
             legacyModal.style.display = 'flex';
             startMusic();
         });
+        
         document.getElementById('btn-close-legacy').addEventListener('click', () => {
             playClick();
             legacyModal.style.display = 'none';
         });
 
-        const btnSound = document.getElementById('btn-sound');
-        let soundOn = true;
-        btnSound.addEventListener('click', () => {
-            playClick();
-            soundOn = !soundOn;
-            btnSound.textContent = soundOn ? 'ЗВУК: ВКЛ' : 'ЗВУК: ВЫКЛ';
-            if (soundOn) bgm.play().catch(()=>{});
-            else bgm.pause();
-            startMusic();
-        });
-
-        document.querySelectorAll('a.vbtn').forEach(btn => {
+        // Глитч-звук при наведении на кнопки
+        document.querySelectorAll('.vbtn').forEach(btn => {
             btn.addEventListener('mouseenter', playGlitch);
         });
 
-        document.body.addEventListener('click', () => startMusic(), { once: true });
-        document.body.addEventListener('touchstart', () => startMusic(), { once: true });
+        // Запуск музыки при первом клике (для обхода автоплея браузеров)
+        document.body.addEventListener('click', () => {
+            startMusic();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }, { once: true });
+        document.body.addEventListener('touchstart', () => {
+            startMusic();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }, { once: true });
+
     </script>
 </body>
 </html>
