@@ -56,6 +56,14 @@
         .osd #timecode { margin-left: auto; }
         @keyframes blink { 50% { opacity: 0; } }
 
+        /* КНОПКИ В ШАПКЕ */
+        .osd-btn {
+            background: #0b0b0b; font-family: inherit; cursor: pointer; padding: 2px 10px; border: 1px solid #333;
+        }
+        #btn-lore { color: var(--red); border-color: var(--red); transition: all 0.2s; }
+        #btn-lore:hover { box-shadow: 0 0 10px var(--red); background: rgba(224,16,42,0.1); }
+        #btn-sound { color: var(--white); }
+
         /* КОНТЕНТ */
         #scroller { flex: 1; overflow-y: auto; overflow-x: hidden; z-index: 1; }
         .col { max-width: 480px; margin: 0 auto; padding: 0 14px 20px; }
@@ -167,6 +175,10 @@
         #legacy-modal p { font-size: 22px; margin-bottom: 20px; }
         #legacy-modal .vbtn { width: auto; padding: 10px 30px; margin: 0 auto; }
 
+        /* ЛОР */
+        .lore-tab.active { border-color: var(--red) !important; color: var(--red) !important; }
+        #lore-content { font-family: 'VT323', monospace; font-size: 20px; line-height: 1.4; color: #c9c4b8; white-space: pre-wrap; text-shadow: 0 0 2px rgba(224,16,42,0.5); }
+        
         @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
         @keyframes jitter { 0%, 90%, 100% { transform: translate(0,0); } 92% { transform: translate(-2px,1px); } 94% { transform: translate(2px,-1px); } 96% { transform: translate(-1px,2px); } }
         @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -182,7 +194,8 @@
             <span class="rec"><i class="dot"></i>REC</span>
             <span class="mode">PLAY</span>
             <span id="timecode">SP 0:05:12</span>
-            <button id="btn-sound" style="background: #0b0b0b; color: #d8d2c4; border: 1px solid #333; padding: 2px 10px; font-family: inherit; cursor: pointer; margin-left: 10px;">ЗВУК: ВКЛ</button>
+            <button id="btn-lore" class="osd-btn">[ АРХИВ ЛОРА ]</button>
+            <button id="btn-sound" class="osd-btn">ЗВУК: ВКЛ</button>
         </div>
 
         <div id="scroller">
@@ -205,7 +218,6 @@
                     <div class="card-body">
                         <h2 class="ct">КОТОСТЬ КЛИКЕР II [1.0B] <span class="tag tag-beta">БЕТА</span></h2>
                         
-                        <!-- ПРЕДУПРЕЖДЕНИЕ ДЛЯ КК2 -->
                         <div class="warning-box">
                             <strong>⚠️ ВАЖНО:</strong> Рекомендуется играть в браузере для избегания багов и других проблем. Браузерная версия на это время более стабильнее чем АПК файл. Особенно на эмуляторах - там довольно полно багов.
                         </div>
@@ -233,7 +245,6 @@
                     <div class="card-body">
                         <h2 class="ct">67 КЛИКЕР <span class="tag tag-cancel">ОТМЕНЕНО</span></h2>
 
-                        <!-- ПРЕДУПРЕЖДЕНИЕ ДЛЯ 67 КЛИКЕРА -->
                         <div class="warning-box error">
                             <strong>💀 ОШИБКА:</strong> Игра сломана. Возможен реворк или замена на новую игру (Котость РНГ, GD RNG).
                         </div>
@@ -278,6 +289,7 @@
         </div>
     </div>
 
+    <!-- МОДАЛКА КОДА -->
     <div class="modal-wrap" id="code-modal">
         <div class="modal">
             <div class="mh">REW // SOURCE.HTML <span id="code-lines">374 СТРОК</span></div>
@@ -286,6 +298,7 @@
         </div>
     </div>
 
+    <!-- МОДАЛКА ЛЕГАСИ -->
     <div id="legacy-modal" style="display: none;">
         <div class="modal">
             <div class="mh">[ ! ] СИСТЕМНОЕ СООБЩЕНИЕ</div>
@@ -294,7 +307,23 @@
         </div>
     </div>
 
-    <!-- АУДИО (файлы) -->
+    <!-- МОДАЛКА ЛОРА -->
+    <div class="modal-wrap" id="lore-modal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="mh" style="color: var(--red); margin-bottom: 5px;">СЕКРЕТНЫЙ АРХИВ // НАЙДЕННЫЕ ЗАПИСИ</div>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                <button class="lore-tab vbtn" data-target="tape1" style="width: auto; padding: 5px 15px; font-size: 18px; border-color: var(--red); color: var(--red);">КАССЕТА 01</button>
+                <button class="lore-tab vbtn" data-target="tape2" style="width: auto; padding: 5px 15px; font-size: 18px; border-color: #333; color: #8a8a8a;">КАССЕТА 02</button>
+            </div>
+
+            <div id="lore-content" style="height: 45vh; overflow-y: auto; background: #050505; border: 1px solid #222; padding: 15px;"></div>
+            
+            <button class="vbtn" id="btn-close-lore" style="margin-top: 10px;">[ ЗАКРЫТЬ АРХИВ ]</button>
+        </div>
+    </div>
+
+    <!-- АУДИО -->
     <audio id="bgm" src="https://raw.githubusercontent.com/TwinkCringeGD/twinkcringegd.github.io/main/bgm3.mp3" loop></audio>
     <audio id="sfx-click" src="https://raw.githubusercontent.com/TwinkCringeGD/twinkcringegd.github.io/main/click.mp3"></audio>
     <audio id="sfx-glitch" src="https://raw.githubusercontent.com/TwinkCringeGD/twinkcringegd.github.io/main/flash.wav"></audio>
@@ -306,8 +335,6 @@
         const bgm = document.getElementById('bgm');
         let audioStarted = false;
         let soundOn = true;
-        
-        // Web Audio API для синтеза звуков, если файлы не загрузились
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function startMusic() {
@@ -323,7 +350,6 @@
             const s = document.getElementById('sfx-click');
             s.currentTime = 0;
             s.play().catch(() => {
-                // Фолбэк, если mp3 нет
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.connect(gain);
@@ -342,7 +368,6 @@
             const s = document.getElementById('sfx-glitch');
             s.currentTime = 0;
             s.play().catch(() => {
-                // Фолбэк
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.connect(gain);
@@ -395,7 +420,7 @@
         }, 1000);
 
         // ==========================================
-        // 4. ГЛАЗА (Следят за мышкой)
+        // 4. ГЛАЗА
         // ==========================================
         const pupils = document.querySelectorAll('.eye b');
         document.addEventListener('mousemove', (e) => {
@@ -412,7 +437,7 @@
         });
 
         // ==========================================
-        // 5. ШУМ (Canvas)
+        // 5. ШУМ
         // ==========================================
         const canvas = document.getElementById('grain');
         const ctx = canvas.getContext('2d');
@@ -461,16 +486,91 @@
             legacyModal.style.display = 'none';
         });
 
-        // Глитч-звук при наведении на кнопки
         document.querySelectorAll('.vbtn').forEach(btn => {
             btn.addEventListener('mouseenter', playGlitch);
         });
 
-        // Запуск музыки при первом клике (для обхода автоплея браузеров)
+        // ==========================================
+        // 7. ЛОР И АРХИВ (Печатная машинка)
+        // ==========================================
+        const loreModal = document.getElementById('lore-modal');
+        const btnLore = document.getElementById('btn-lore');
+        const btnCloseLore = document.getElementById('btn-close-lore');
+        const loreContent = document.getElementById('lore-content');
+        const loreTabs = document.querySelectorAll('.lore-tab');
+
+        const loreTexts = {
+            tape1: `Found Footage 1 (КК1 ЛОР)\n\nГде я?.. Это место новое.\nЧто это такое в далеке?\nКот? Похоже на какую то игру с вкладками.\nА если я... в игре?\n???: Добро Пожаловать в мой мир.\n(Кто ты?...)\nThe Creator:Можешь звать меня... просто креатор. Проведу тебе небольшое обучение здесь.\nТы тоже здесь что ли оказался?\nThe Creator: (кхм кхм...) Да,да... Так вот, забыли. Кликай по котику и поулчай Котости.\n(Клик)\nДОСТИЖЕНИЕ ПОЛУЧЕНО - ПЕРВЫЙ КЛИК!\nThe Creator:Я отделил мой слот сохранения от твоего чтоб не было конфликта аккаунтов.\nЭто место... Очень странное\n\nThe Creator: Наслаждайся! Я пойду выпью чаю...\nСТОЙ!\n\n[Tape End at 2 minutes,19 seconds,0 hours and 0 days.]`,
+            
+            tape2: `After... (Часть 2)\n\nЧто это была за кассета? Будто бы кто то здесь заперт...\nТОЧНО! Файлы сохранения! Я знаю как теперь играть в это! Все из за 1 кассеты.\nГде вкладка сохранений... Нашел!\nThe Creator: Вижу что ты новый здесь,нет ли?\n… Не уверен и вообще, как ты тут оказался!?\nThe Creator: Ну, раз ты все знаешь значит я пошел.\nЛадно.\nТеперь я могу заглянуть в эту вкладку.\n[Добро Пожаловать в Файлы Сохранения! Тут хранятся файлы сохранения... не очевидно,да?]\nФАЙЛ 1:Unknown Name (файл сохранения есть но аккаунт пустой.)\nФАЙЛ 2:The Creator (Unknown Data: ERROR 003 Couldnt find Save File in the game code or JSON file.)\nФАЙЛ 3:ПУСТ (Сохранить?)\nКажется больше тут ничего нету...\nЭто бесмысслено\nЧто за "почта"?\n[ПОЧТА]\n1 Сообщение от The Creator\n\nThe Creator:Держи свой боус дня. (+250 Котостей)\nЯ... Пожалуй откажусь.\nНу и что мне тут еще делать?\nТочно! Кликать же тут надо.\n(Клик,клик,клик...)\nУже 100 котостей.\n[ДОСТИЖЕНИЕ ПОЛУЧЕНО! Первая сотня]\nХотя бы достижение.\nПойду посмотрю еще новые вкладки...\n"Улучшения?" Я могу улучшать свои клики и покупать автоклики?\nЯ так думаю да!\n"Скины" Хмм... Дорогие. Большая котость стоит 100000 котостей.\n"Настройки" Тут ничего нету.\n"Дворец" Эта вкладка вообще закрыта.\n"Ачивки" Ну тут уже очевидно.\nПросто продолжу кликать...`
+        };
+
+        let typingInterval;
+
+        function typeText(text, element, callback) {
+            clearInterval(typingInterval);
+            element.textContent = '';
+            let i = 0;
+            typingInterval = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    element.scrollTop = element.scrollHeight; 
+                    // Звук печатной машинки
+                    if (i % 2 === 0 && soundOn && audioCtx.state === 'running') {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.type = 'square';
+                        osc.frequency.setValueAtTime(800 + Math.random() * 200, audioCtx.currentTime);
+                        gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                        osc.start();
+                        osc.stop(audioCtx.currentTime + 0.05);
+                    }
+                    i++;
+                } else {
+                    clearInterval(typingInterval);
+                    if (callback) callback();
+                }
+            }, 25); // Скорость печати
+        }
+
+        btnLore.addEventListener('click', () => {
+            playClick();
+            loreModal.classList.add('open');
+            startMusic();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            document.querySelector('[data-target="tape1"]').click();
+        });
+
+        btnCloseLore.addEventListener('click', () => {
+            playClick();
+            loreModal.classList.remove('open');
+            clearInterval(typingInterval);
+        });
+
+        loreTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                playClick();
+                loreTabs.forEach(t => {
+                    t.style.borderColor = '#333';
+                    t.style.color = '#8a8a8a';
+                });
+                tab.style.borderColor = 'var(--red)';
+                tab.style.color = 'var(--red)';
+                
+                const target = tab.getAttribute('data-target');
+                typeText(loreTexts[target], loreContent);
+            });
+        });
+
+        // Запуск при первом клике
         document.body.addEventListener('click', () => {
             startMusic();
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }, { once: true });
+        
         document.body.addEventListener('touchstart', () => {
             startMusic();
             if (audioCtx.state === 'suspended') audioCtx.resume();
